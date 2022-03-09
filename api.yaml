@@ -1,0 +1,183 @@
+swagger: "2.0"
+info:
+  description: "Todolist Api Doc"
+  version: "0.0.1-SNAPSHOT"
+  title: "todolist"
+  termsOfService: "http://loclahost/none"
+  contact:
+    email: "real@mail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost"
+basePath: "/v1"
+tags:
+  - name: "todo-list"
+    description: "Todo List"
+  - name: "user"
+    description: ""User
+schemes:
+  - "https"
+  - "http"
+paths:
+  /todo-list/{list_id}:
+    get:
+      tags:
+        - "todo-list"
+      summary: "Ermittelt anhand der übergebenen ID, die entsprechende Todo-Liste"
+      operationId: "getTodoList"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "list_id"
+          required: true
+          type: string
+      responses:
+        "200":
+          description: "successful operation"
+        "405":
+          description: "invalid input"
+    delete:
+      tags:
+        - "todo-list"
+      summary: "Löscht die Liste mit einer angegebenen ID"
+      operationId: "deleteTodoList"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "list_id"
+          in: "path"
+          required: true
+          type: string
+      responses:
+        "200":
+          description: "successful operation"
+        "405":
+          description: "invalid input"
+  /todolist/:
+    post:
+      tags:
+        - "todo-list"
+      summary: "Fügt eine neue Todo-Liste hinzu"
+      operationId: "addTodoList"
+      consumes:
+        - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+        "405":
+          description: "invalid input"
+  /todo-list/{list_id}/entry/:
+    post:
+      tags:
+        - "todo-list"
+      summary: "Fügt einen Eintrag zu einer bestehenden Todo-Liste hinzu"
+      operationId: "addEntryToTodoList"
+      consumes:
+        - "application/json"
+      parameters:
+        - name: "list_id"
+          in: "path"
+          required: true
+          type: string
+      responses:
+        "200":
+          description: "successful operation"
+        "405":
+          description: "invalid input"
+  /todo-list/{list_id}/entry/{entry_id}:
+    put:
+      tags:
+        - "todo-list"
+      summary: "Aktualisiert einen Eintrag aus einer bestehenden Todo-Liste"
+      operationId: "updateEntryFromTodoList"
+      consumes:
+        - "application/json"
+      parameters:
+        - name: "list_id"
+          in: "path"
+          type: string
+          required: true
+        - name: "entry_id"
+          in: "path"
+          required: true
+          type: string
+      responses:
+        "200":
+          description: "successful operation"
+        "405":
+          description: "invalid input"
+    delete:
+      tags:
+        - "todo-list"
+      summary: "Löscht einen Eintrag aus einer bestehenden Todo-Liste"
+      operationId: "deleteEntryFromTodoList"
+      consumes:
+        - "application/json"
+      parameters:
+        - name: "list_id"
+          in: "path"
+          required: true
+          type: string
+        - name: "entry_id"
+          in: "path"
+          required: true
+          type: string
+      responses:
+        "200":
+          description: "successful operation"
+        "405":
+          description: "invalid input"
+  /user:
+    get:
+      tags:
+        - "user"
+      summary: "Liefert eine Liste aller Nutzer"
+      operationId: "getUsers"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+        "405":
+          description: "invalid input"
+    post:
+      tags:
+        - "user"
+      summary: "Fügt einen Nutzer hinzu"
+      operationId: "createUser"
+      consumes:
+        - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+        "405":
+          description: "invalid input"
+  /user/{user_id}:
+    delete:
+      tags:
+        - "user"
+      summary: "Löscht einen Nutzer"
+      operationId: "deleteUser"
+      consumes:
+        - "application/json"
+      parameters:
+        - name: "user_id"
+          in: "path"
+          required: true
+          type: string
+      responses:
+        "200":
+          description: "successful operation"
+        "405":
+          description: "invalid input"
+definitions:
+  ApiResponse:
+    type: "object"
+    properties:
+      list:
+        type: "object"
+        description: list of messages in the todolist

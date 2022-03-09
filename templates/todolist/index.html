@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block main%}
+<div class="col-12 card-title">
+    <h2>
+        Todo-Lists
+    </h2>
+</div>
+<div class="col-12">
+    <div class="card p-2">
+        <form action="{{ url_for('createList') }}" method="POST">
+            <div class="row d-flex">
+                <div class="col-10 has-validation">
+                    <input name="name" placeholder="Listen Name" type="text" class="form-control">
+                </div>
+                <div class="col-2 d-flex justify-content-end">
+                    <button submit class="btn btn-success">
+                        Hinzufügen
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="col-12">
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Aktion</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for list in todoLists%}
+            <tr>
+                <td>
+                    {{list['id']}}
+                </td>
+                <td>
+                    {{list['name']}}
+                </td>
+                <td class="d-flex justify-content-end">
+                    <buttom data-route="{{ url_for('todoListDelete', list_id=list['id']) }}" class="btn btn-danger mr-2">
+                        Löschen
+                    </buttom>
+                    <a class="btn btn-success ml-3" href={{ url_for('todoShow', list_id=list['id']) }}>
+                        Anzeigen
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block script %}
+
+<script>
+$(document).ready(function(){
+
+
+    $('.btn-danger').click(function(){
+        let button = $(this)
+        let row = button.parent().parent('tr')
+        $.ajax({
+            url: button.data('route'),
+            method: 'DELETE',
+            success: function(){
+                row.addClass('d-none')
+            }
+        })
+    })
+
+})
+</script>
+{% endblock %}

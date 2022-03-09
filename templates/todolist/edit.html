@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <div class="col-12 card-title">
+        {{data['todo']['name']}} Bearbeiten
+    </div>
+    <div class="col-12">
+        <form action="{{url_for('todoUpdate', todo_id=data['todo']['id'])}}" method="post">
+            <div>
+                <label for="">name</label>
+                <input type="text" value="{{data['todo']['name']}}" name="name"  class="form-control">
+            </div>
+            <div class="my-3">
+                <select name="user" class="form-select">
+                    {% for user in data['users']%}
+                        <option value="{{user['id']}}"
+                        {% if user.id == data['todo']['user_id'] %}
+                            selected
+                        {% endif %}
+                        >
+                            {{user['name']}}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <textarea name="content" class="form-control">
+                 {{data['todo']['description']}}
+            </textarea>
+            <div class="col-12 d-flex justify-content-end">
+                <a href="{{url_for('todoShow', list_id=data['todo']['list_id'])}}">
+                    <button class="btn btn-warning">
+                        Abbrechen
+                    </button>
+                </a>
+                <button class="btn btn-success">
+                    Speichern
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

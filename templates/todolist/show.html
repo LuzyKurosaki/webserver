@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block main%}
+    
+<div class="col-12 card-title">
+    <h2>
+        {{data['list']['name']}}
+    </h2>
+</div>
+<div class="col-12 d-flex justify-content-end">
+    <button id="openTodoCreate" class="btn btn-success">
+        Neuer Eintrag
+    </button>
+</div>
+<div class="col-12">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>User</th>
+                <th></th>
+            </tr>
+            
+        </thead>
+        <tbody>
+            {% for entry in data['entries'] %}
+            <tr>
+                <td>
+                    {{entry['entry']['name']}}
+                </td>
+                <td >
+                    {{entry['entry']['description']}}
+                </td>
+                <td>
+                    {{entry['user']['name']}}
+                </td>
+                <td class="d-flex justify-content-end">
+                    <a href="{{ url_for('todoEdit', todo_id=entry['entry']['id'])}}">
+                        <button class="btn btn-warning">
+                            Bearbeiten
+                        </button>
+                    </a>
+                    <a href={{ url_for('todoDelete', todo_id=entry['entry']['id']) }}>
+                        <button class="btn btn-danger">Delete</button>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div id="todoCreate" class="modal" tabindex="-1">
+    <form action="{{ url_for('createTodoEntry', list_id=data['list']['id'] ) }}" method="post">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Neuer Todo Eintrag</h5>
+                <button type="button" class="btn-close modalClose" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                    <div>
+                        <label for="">Name</label>
+                        <input type="text" name="name" class="form-control">
+                    </div>
+                    <div>
+                        <label for="">
+                            Benutzer
+                        </label>
+                        <select  class="form-select my-3" name="user" aria-placeholder="Benutzer" id="">
+                            {% for user in data['users'] %}
+                                <option value="{{ user['id'] }}">{{ user['name'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <label for="">
+                        Inhalt
+                    </label>
+                    <textarea name="content" id="" cols="30" rows="10" class="form-control"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary modalClose">Close</button>
+                    <button type="submit" class="btn btn-primary">Speichern</button>
+                </div>
+            </div>
+        </div>
+    </form>
+  </div>
+
+  
+{% endblock%}
+
+{% block script%}
+<script>
+    $(document).ready(function() {
+        $('#openTodoCreate').click(function(){
+            $('#todoCreate').show()
+        })
+        $('.closeModal').click(function (){
+            $('#todoCreate').hide()
+        })
+    })
+</script>
+{% endblock %}
